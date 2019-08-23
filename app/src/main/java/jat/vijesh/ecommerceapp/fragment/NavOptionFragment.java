@@ -61,7 +61,6 @@ public class NavOptionFragment extends Fragment {
     }
 
 
-
     private void initRecyclerView() {
 
 
@@ -90,6 +89,9 @@ public class NavOptionFragment extends Fragment {
 
                     Toast.makeText(getActivity(), " item Clicked - " + item.getName(), Toast.LENGTH_LONG).show();
 
+
+                    navItemClickAction(item);
+
                 }
 
             }
@@ -97,6 +99,25 @@ public class NavOptionFragment extends Fragment {
 
 
         navItemRecyclerView.setAdapter(mNavItemAdapter);
+
+    }
+
+    private void navItemClickAction(NavItems item) {
+
+        switch (item.getName()) {
+
+            case "Home":
+
+                HomeFragment fragment = new HomeFragment();
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.slide1, R.anim.slide2)
+                        .add(R.id.navFragmentContainer, fragment).addToBackStack("HomeFragment")
+                        .commit();
+
+                break;
+
+        }
 
     }
 

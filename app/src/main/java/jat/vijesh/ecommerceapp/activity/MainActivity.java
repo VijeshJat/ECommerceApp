@@ -1,25 +1,24 @@
 package jat.vijesh.ecommerceapp.activity;
 
-import android.arch.lifecycle.ReportFragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import jat.vijesh.ecommerceapp.R;
+import jat.vijesh.ecommerceapp.fragment.HomeFragment;
 import jat.vijesh.ecommerceapp.fragment.NavOptionFragment;
 import jat.vijesh.ecommerceapp.model.NavItems;
 
@@ -53,10 +52,22 @@ public class MainActivity extends AppCompatActivity
 
         initNavItems();
 
+
+        addHomeFragment();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void addHomeFragment() {
+
+        HomeFragment fragment = new HomeFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentContainer, fragment).addToBackStack("HomeFragment")
+                .commit();
+
     }
 
     private List<NavItems> itemsList = new ArrayList<>();
@@ -97,9 +108,9 @@ public class MainActivity extends AppCompatActivity
             items.setName("kids Sub Item " + i);
 
 
-            if (i == 1 || i == 3){
+            if (i == 1 || i == 3) {
 
-                for (int j = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
 
 
                     NavItems item = new NavItems();
@@ -107,11 +118,9 @@ public class MainActivity extends AppCompatActivity
                     items.getSubItems().add(item);
 
 
-
                 }
 
             }
-
 
 
             kids.getSubItems().add(items);
