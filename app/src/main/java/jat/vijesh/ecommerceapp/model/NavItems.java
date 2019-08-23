@@ -1,9 +1,10 @@
 package jat.vijesh.ecommerceapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NavItems {
+public class NavItems implements Serializable {
 
 
     private int id;

@@ -2,12 +2,18 @@ package jat.vijesh.ecommerceapp.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jat.vijesh.ecommerceapp.R;
 import jat.vijesh.ecommerceapp.adapter.NavItemAdapter;
@@ -21,58 +27,40 @@ public class NavOptionFragment extends Fragment {
     private View view;
     private RecyclerView navItemRecyclerView;
     private NavItemAdapter mNavItemAdapter;
+    private List<NavItems> itemsList = new ArrayList<>();
 
     public NavOptionFragment() {
         // Required empty public constructor
     }
 
 
+    public void setSubItemOptions(List<NavItems> subItemsList) {
+        itemsList.clear();
+        itemsList.addAll(subItemsList);
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_nav_option, container, false);
 
         navItemRecyclerView = view.findViewById(R.id.navItemRecyclerView);
 
-
-        prepareNavItems();
-        initRecyclerView();
-
         return view;
 
     }
 
-    private void prepareNavItems() {
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
-        NavItems home = new NavItems();
-        home.setName("Home");
-
-        NavItems orders = new NavItems();
-        orders.setName("Your Orders");
-
-        NavItems itemOne = new NavItems();
-        itemOne.setName("Home");
-
-        NavItems mens = new NavItems();
-        mens.setName("Mens");
-
-
-        NavItems womens = new NavItems();
-        womens.setName("Womens");
-
-
-        NavItems kids = new NavItems();
-        kids.setName("Kids");
-
-        NavItems settings = new NavItems();
-        settings.setName("Settings");
-
-        NavItems about = new NavItems();
-        about.setName("About");
+        initRecyclerView();
 
     }
+
+
 
     private void initRecyclerView() {
 
@@ -80,9 +68,29 @@ public class NavOptionFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         navItemRecyclerView.setLayoutManager(linearLayoutManager);
         navItemRecyclerView.setHasFixedSize(true);
-        mNavItemAdapter = new NavItemAdapter(getActivity(), null, new NavItemAdapter.OnItemClickListener() {
+        mNavItemAdapter = new NavItemAdapter(getActivity(), itemsList, new NavItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int position, NavItems item) {
+
+
+                if (item.getSubItems() != null && item.getSubItems().size() > 0) {
+
+                    NavOptionFragment fragment = new NavOptionFragment();
+                    fragment.setSubItemOptions(item.getSubItems());
+
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(R.anim.slide1, R.anim.slide2)
+                            .replace(R.id.navFragmentContainer, fragment)
+                            .addToBackStack("fragment child")
+                            .commit();
+
+
+                } else {
+
+                    Toast.makeText(getActivity(), " item Clicked - " + item.getName(), Toast.LENGTH_LONG).show();
+
+                }
 
             }
         });

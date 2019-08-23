@@ -1,5 +1,6 @@
 package jat.vijesh.ecommerceapp.activity;
 
+import android.arch.lifecycle.ReportFragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,10 +16,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jat.vijesh.ecommerceapp.R;
+import jat.vijesh.ecommerceapp.fragment.NavOptionFragment;
+import jat.vijesh.ecommerceapp.model.NavItems;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FrameLayout navFragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +47,11 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        FrameLayout navFragmentContainer = findViewById(R.id.navFragmentContainer);
+        navFragmentContainer = findViewById(R.id.navFragmentContainer);
 
+        prepareNavItems();
+
+        initNavItems();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -48,11 +59,111 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private List<NavItems> itemsList = new ArrayList<>();
+
+    private void prepareNavItems() {
+
+
+        NavItems home = new NavItems();
+        home.setName("Home");
+
+        NavItems orders = new NavItems();
+        orders.setName("Your Orders");
+
+        NavItems mens = new NavItems();
+        mens.setName("Mens");
+
+        for (int i = 0; i < 6; i++) {
+            NavItems items = new NavItems();
+            items.setName("Mens Sub Item " + i);
+            mens.getSubItems().add(items);
+        }
+
+
+        NavItems womens = new NavItems();
+        womens.setName("Womens");
+
+        for (int i = 0; i < 4; i++) {
+            NavItems items = new NavItems();
+            items.setName("Womens Sub Item " + i);
+            womens.getSubItems().add(items);
+        }
+
+        NavItems kids = new NavItems();
+        kids.setName("Kids");
+
+        for (int i = 0; i < 6; i++) {
+            NavItems items = new NavItems();
+            items.setName("kids Sub Item " + i);
+
+
+            if (i == 1 || i == 3){
+
+                for (int j = 0; i < 4; i++) {
+
+
+                    NavItems item = new NavItems();
+                    item.setName("kids Sub Sub Items " + j);
+                    items.getSubItems().add(item);
+
+
+
+                }
+
+            }
+
+
+
+            kids.getSubItems().add(items);
+
+        }
+
+
+        NavItems settings = new NavItems();
+        settings.setName("Settings");
+
+        NavItems about = new NavItems();
+        about.setName("About");
+
+
+        itemsList.add(home);
+        itemsList.add(orders);
+        itemsList.add(mens);
+        itemsList.add(womens);
+        itemsList.add(kids);
+        itemsList.add(settings);
+        itemsList.add(about);
+
+
+    }
+
+
+    private void initNavItems() {
+
+        NavOptionFragment fragment = new NavOptionFragment();
+        fragment.setSubItemOptions(itemsList);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.slide1, R.anim.slide2)
+                .add(R.id.navFragmentContainer, fragment).addToBackStack("fragment")
+                .commit();
+
+    }
+
     @Override
     public void onBackPressed() {
+
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+
+            if (count == 1)
+                drawer.closeDrawer(GravityCompat.START);
+            else {
+                getSupportFragmentManager().popBackStack();
+            }
         } else {
             super.onBackPressed();
         }
