@@ -117,7 +117,29 @@ public class NavOptionFragment extends Fragment {
 
                 break;
 
+            case "Your Orders":
+
+                addOrderFragment();
+
+                break;
+
+
+
+
+
+
         }
+
+    }
+
+
+    private void addOrderFragment() {
+
+        OrderFragment fragment = new OrderFragment();
+        getActivity(). getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, fragment).addToBackStack("OrderFragment")
+                .commit();
 
     }
 

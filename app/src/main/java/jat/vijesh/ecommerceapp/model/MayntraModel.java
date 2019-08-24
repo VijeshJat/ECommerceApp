@@ -3,6 +3,7 @@ package jat.vijesh.ecommerceapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MayntraModel {
@@ -54,7 +55,8 @@ public class MayntraModel {
     private String globalAttrBrand;
     @SerializedName("image_entries")
     @Expose
-    private List<String> imageEntries = null;
+    private List<String> imageEntries = new ArrayList<>();
+    private List<Image> mediaList = new ArrayList<>();
     @SerializedName("global_attr_base_colour")
     @Expose
     private String globalAttrBaseColour;
@@ -210,6 +212,16 @@ public class MayntraModel {
         return imageEntries;
     }
 
+    public List<Image> getImageMedia() {
+        return mediaList;
+    }
+
+    // private List<Image> mediaList = new ArrayList<>();
+
+    public void setImageMedia(List<Image> imageEntries) {
+        this.mediaList = mediaList;
+    }
+
     public void setImageEntries(List<String> imageEntries) {
         this.imageEntries = imageEntries;
     }
@@ -294,6 +306,66 @@ public class MayntraModel {
         this.discountLabel = discountLabel;
     }
 
+
+    public class Image {
+
+        @SerializedName("path")
+        @Expose
+        private String path;
+        @SerializedName("domain")
+        @Expose
+        private String domain;
+        @SerializedName("securedDomain")
+        @Expose
+        private String securedDomain;
+        @SerializedName("relativePath")
+        @Expose
+        private String relativePath;
+        @SerializedName("servingUploaderType")
+        @Expose
+        private String servingUploaderType;
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public String getDomain() {
+            return domain;
+        }
+
+        public void setDomain(String domain) {
+            this.domain = domain;
+        }
+
+        public String getSecuredDomain() {
+            return securedDomain;
+        }
+
+        public void setSecuredDomain(String securedDomain) {
+            this.securedDomain = securedDomain;
+        }
+
+        public String getRelativePath() {
+            return relativePath;
+        }
+
+        public void setRelativePath(String relativePath) {
+            this.relativePath = relativePath;
+        }
+
+        public String getServingUploaderType() {
+            return servingUploaderType;
+        }
+
+        public void setServingUploaderType(String servingUploaderType) {
+            this.servingUploaderType = servingUploaderType;
+        }
+
+    }
+
 }
 
-/////////
